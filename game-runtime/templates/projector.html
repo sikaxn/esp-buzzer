@@ -3,26 +3,35 @@
 {% block title %}Projector{% endblock %}
 
 {% block content %}
-<h1 class="text-center display-4">Buzzer Projector</h1>
-<hr>
-<div id="winnerStatus" class="text-center text-primary fw-bold fs-2">Not Started</div>
+<div class="text-center">
+  <div id="winnerStatus" class="text-success fw-bold fs-2">Not Started</div>
+  <div id="buttonStatus" class="text-muted fs-4 mt-2"></div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
 socket.on('projector_state', data => {
   const display = document.getElementById('winnerStatus');
+  const button = document.getElementById('buttonStatus');
+
   if (data.state === "clear") {
     display.textContent = "Not Started";
     display.className = "text-center text-secondary fw-bold fs-2";
+    button.textContent = "";
   } else if (data.state === "awaiting") {
     display.textContent = "Awaiting Buzz...";
     display.className = "text-center text-warning fw-bold fs-2";
+    button.textContent = "";
   } else if (data.state === "winner") {
-    display.textContent = `Winner: ${data.mac}`;
+    display.textContent = `Winner: ${data.name}`;
+
     display.className = "text-center text-success fw-bold fs-2";
+    button.textContent = `Button ${data.button}`;
   }
 });
 </script>
+
 
 {% endblock %}

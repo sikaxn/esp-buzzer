@@ -12,6 +12,8 @@ buzz_window_active = False
 start_button_enabled = False
 window_start_time = 0
 winner_mac = None
+mac_name_map = {}  # ✅ add this at the top
+
 
 on_winner = None
 on_devices_changed = None
@@ -89,12 +91,24 @@ def buzz_window_timer():
 
     earliest = min(buzz_buffer, key=lambda b: b["timestamp"])
     winner_mac = earliest["mac"]
+    button = earliest["button"]
+    timestamp = earliest["timestamp"]
+
+    print(f"[RESULT] Winner: MAC {winner_mac} Button {button} @ {timestamp} ms")
+
     if on_winner:
-        on_winner(winner_mac)
+        try:
+            print("[DEBUG] Calling on_winner callback...")
+            on_winner({
+                "mac": winner_mac,
+                "button": button
+            })
+        except Exception as e:
+            print(f"[ERROR] Failed to call on_winner: {e}")
+    else:
+        print("[DEBUG] on_winner is not set.")
 
-    print(f"[RESULT] Winner: MAC {winner_mac} Button {earliest['button']} @ {earliest['timestamp']} ms")
     buzz_buffer.clear()
-
 
 
 def start_buzz_round():
@@ -116,6 +130,7 @@ def get_devices():
     return [{
         "ip": info["ip"],
         "mac": mac,
+        "name": mac_name_map.get(mac, ""),  # ✅ use injected map
         "last_seen": int(now - info["last_seen"]),
         "last_button": info["last_button"]
     } for mac, info in devices.items()]
