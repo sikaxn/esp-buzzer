@@ -1,0 +1,133 @@
+<svg width="700" height="480" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .outer-box {
+        fill: white;
+        stroke: #74c0fc;
+        stroke-width: 4;
+        rx: 20;
+        ry: 20;
+      }
+
+      .top-bar {
+        fill: #1c7ed6;
+        rx: 20;
+        ry: 20;
+      }
+
+      .question-text {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 24px;
+        fill: #212529;
+        font-weight: bold;
+      }
+
+      .option {
+        fill: #f1f3f5;
+        stroke: #ced4da;
+        stroke-width: 2;
+        rx: 12;
+        ry: 12;
+      }
+
+      .option-selected {
+        fill: #69db7c;
+        stroke: #38b24d;
+        stroke-width: 8; /* Huge border */
+        rx: 12;
+        ry: 12;
+      }
+
+      .true-option {
+        fill: #d3f9d8;
+        stroke: #69db7c;
+        stroke-width: 2;
+        rx: 12;
+        ry: 12;
+      }
+
+      .false-option {
+        fill: #ffe3e3;
+        stroke: #ff6b6b;
+        stroke-width: 2;
+        rx: 12;
+        ry: 12;
+      }
+
+      .label {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+        text-anchor: start;
+      }
+
+      .label-selected {
+        fill: white;
+      }
+
+      .label-default {
+        fill: #343a40;
+      }
+
+      .subtext {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 14px;
+        fill: #f1f3f1;
+        text-anchor: start;
+      }
+
+      .subtext-default {
+        fill: #495057;
+      }
+
+      .true-label {
+        fill: #2f9e44;
+      }
+
+      .false-label {
+        fill: #c92a2a;
+      }
+
+      .top-label {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 22px;
+        fill: white;
+        font-weight: bold;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+    </style>
+  </defs>
+
+  <!-- Main container -->
+  <rect x="0" y="0" width="700" height="480" class="outer-box"/>
+
+  <!-- Top bar -->
+  <rect x="0" y="0" width="700" height="60" class="top-bar"/>
+  <text x="350" y="32" class="top-label">Question 1</text>
+
+  <!-- Question text -->
+  <text x="50" y="90" class="question-text">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  </text>
+
+  <!-- Option A (selected with big border) -->
+  <rect x="50" y="110" width="600" height="70" class="option-selected"/>
+  <text x="70" y="135" class="label label-selected">Option A</text>
+  <text x="70" y="160" class="subtext">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</text>
+
+  <!-- Option B -->
+  <rect x="50" y="190" width="600" height="70" class="option"/>
+  <text x="70" y="215" class="label label-default">Option B</text>
+  <text x="70" y="240" class="subtext subtext-default">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</text>
+
+  <!-- TRUE -->
+  <rect x="50" y="270" width="600" height="70" class="true-option"/>
+  <text x="70" y="295" class="label true-label">TRUE ✓</text>
+  <text x="70" y="320" class="subtext subtext-default">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</text>
+
+  <!-- FALSE -->
+  <rect x="50" y="350" width="600" height="70" class="false-option"/>
+  <text x="70" y="375" class="label false-label">FALSE ✗</text>
+  <text x="70" y="400" class="subtext subtext-default">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</text>
+</svg>

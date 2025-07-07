@@ -1,0 +1,91 @@
+<svg width="1920" height="220" viewBox="0 0 1920 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .overlay-bg {
+        fill: rgba(0, 0, 0, 0.5); /* semi-transparent dark background */
+        rx: 20;
+        ry: 20;
+      }
+
+      .question-number {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 20px;
+        fill: #74c0fc;
+        font-weight: bold;
+      }
+
+      .question-text {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 26px;
+        fill: white;
+        font-weight: bold;
+      }
+
+      .answer-text {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 16px;
+        fill: #dee2e6;
+      }
+
+      .symbol-box {
+        fill: #f1f3f5;
+        stroke: #ced4da;
+        stroke-width: 2;
+        rx: 10;
+        ry: 10;
+      }
+
+      .symbol-selected {
+        fill: #69db7c;
+        stroke: #38b24d;
+        stroke-width: 4;
+        rx: 10;
+        ry: 10;
+      }
+
+      .symbol-text {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+
+      .symbol-default {
+        fill: #212529;
+      }
+
+      .symbol-selected-text {
+        fill: white;
+      }
+    </style>
+  </defs>
+
+  <!-- Semi-transparent background overlay -->
+  <rect x="40" y="10" width="1840" height="200" class="overlay-bg" />
+
+  <!-- Left Section: Question -->
+  <text x="80" y="50" class="question-number">QUESTION 1</text>
+  <text x="80" y="90" class="question-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit?</text>
+
+  <!-- Answer Descriptions -->
+  <text x="80" y="130" class="answer-text">Option A: Lorem ipsum dolor sit amet.</text>
+  <text x="80" y="150" class="answer-text">Option B: Consectetur adipiscing elit.</text>
+  <text x="80" y="170" class="answer-text">TRUE ✓: The statement is correct.</text>
+  <text x="80" y="190" class="answer-text">FALSE ✗: The statement is incorrect.</text>
+
+  <!-- Right Section: 2x2 Grid -->
+  <!-- Row 1 -->
+  <rect x="1620" y="50" width="70" height="60" class="symbol-selected"/>
+  <text x="1655" y="85" class="symbol-text symbol-selected-text">A</text>
+
+  <rect x="1700" y="50" width="70" height="60" class="symbol-box"/>
+  <text x="1735" y="85" class="symbol-text symbol-default">B</text>
+
+  <!-- Row 2 -->
+  <rect x="1620" y="125" width="70" height="60" class="symbol-box"/>
+  <text x="1655" y="160" class="symbol-text symbol-default">✓</text>
+
+  <rect x="1700" y="125" width="70" height="60" class="symbol-box"/>
+  <text x="1735" y="160" class="symbol-text symbol-default">✗</text>
+</svg>

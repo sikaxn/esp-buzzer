@@ -1,0 +1,155 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <!-- Grid pattern -->
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0 H0 V30" fill="none" stroke="#ffffff22" stroke-width="1"/>
+    </pattern>
+
+    <style>
+      .cell {
+        fill: #1c7ed6;
+        stroke: #ffffff;
+        stroke-width: 4;
+      }
+
+      .header {
+        fill: #1864ab;
+        stroke: #ffffff;
+        stroke-width: 4;
+      }
+
+      .highlight {
+        fill: #ffd43b;
+        stroke: #fab005;
+        stroke-width: 6;
+      }
+
+      .cell-text {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 40px;
+        fill: white;
+        font-weight: bold;
+        dominant-baseline: middle;
+        text-anchor: middle;
+      }
+
+      .header-text {
+        font-size: 32px;
+        fill: #f1f3f5;
+      }
+    </style>
+  </defs>
+
+  <!-- Draw grid cells (6x6 layout) -->
+  <!-- Each cell: 320x180 -->
+
+  <!-- Headers (Row 0) -->
+  <g>
+    <rect x="0" y="0" width="320" height="180" class="header"/>
+    <rect x="320" y="0" width="320" height="180" class="header"/>
+    <rect x="640" y="0" width="320" height="180" class="header"/>
+    <rect x="960" y="0" width="320" height="180" class="header"/>
+    <rect x="1280" y="0" width="320" height="180" class="header"/>
+    <rect x="1600" y="0" width="320" height="180" class="header"/>
+    
+    <!-- Grid pattern -->
+    <rect x="0" y="0" width="1920" height="180" fill="url(#grid)" />
+    
+    <!-- Text -->
+    <text x="160" y="90" class="cell-text header-text">CATEGORY 1</text>
+    <text x="480" y="90" class="cell-text header-text">CATEGORY 2</text>
+    <text x="800" y="90" class="cell-text header-text">CATEGORY 3</text>
+    <text x="1120" y="90" class="cell-text header-text">CATEGORY 4</text>
+    <text x="1440" y="90" class="cell-text header-text">CATEGORY 5</text>
+    <text x="1760" y="90" class="cell-text header-text">CATEGORY 6</text>
+  </g>
+
+  <!-- Point Rows -->
+  <!-- Loop through rows 1–5 (y starts at 180, increments by 180) -->
+  <!-- Highlight CATEGORY 2 – 200 (column 1, row 2) -->
+
+  <!-- Row 1 (100 points) -->
+  <g>
+    <rect x="0" y="180" width="320" height="180" class="cell"/>
+    <rect x="320" y="180" width="320" height="180" class="cell"/>
+    <rect x="640" y="180" width="320" height="180" class="cell"/>
+    <rect x="960" y="180" width="320" height="180" class="cell"/>
+    <rect x="1280" y="180" width="320" height="180" class="cell"/>
+    <rect x="1600" y="180" width="320" height="180" class="cell"/>
+    <rect x="0" y="180" width="1920" height="180" fill="url(#grid)" />
+    <text x="160" y="270" class="cell-text">100</text>
+    <text x="480" y="270" class="cell-text">100</text>
+    <text x="800" y="270" class="cell-text">100</text>
+    <text x="1120" y="270" class="cell-text">100</text>
+    <text x="1440" y="270" class="cell-text">100</text>
+    <text x="1760" y="270" class="cell-text">100</text>
+  </g>
+
+  <!-- Row 2 (200 points) -->
+  <g>
+    <rect x="0" y="360" width="320" height="180" class="cell"/>
+    <rect x="320" y="360" width="320" height="180" class="highlight"/>
+    <rect x="640" y="360" width="320" height="180" class="cell"/>
+    <rect x="960" y="360" width="320" height="180" class="cell"/>
+    <rect x="1280" y="360" width="320" height="180" class="cell"/>
+    <rect x="1600" y="360" width="320" height="180" class="cell"/>
+    <rect x="0" y="360" width="1920" height="180" fill="url(#grid)" />
+    <text x="160" y="450" class="cell-text">200</text>
+    <text x="480" y="450" class="cell-text" fill="#212529">200</text> <!-- Highlighted (dark text) -->
+    <text x="800" y="450" class="cell-text">200</text>
+    <text x="1120" y="450" class="cell-text">200</text>
+    <text x="1440" y="450" class="cell-text">200</text>
+    <text x="1760" y="450" class="cell-text">200</text>
+  </g>
+
+  <!-- Row 3 (300 points) -->
+  <g>
+    <rect x="0" y="540" width="320" height="180" class="cell"/>
+    <rect x="320" y="540" width="320" height="180" class="cell"/>
+    <rect x="640" y="540" width="320" height="180" class="cell"/>
+    <rect x="960" y="540" width="320" height="180" class="cell"/>
+    <rect x="1280" y="540" width="320" height="180" class="cell"/>
+    <rect x="1600" y="540" width="320" height="180" class="cell"/>
+    <rect x="0" y="540" width="1920" height="180" fill="url(#grid)" />
+    <text x="160" y="630" class="cell-text">300</text>
+    <text x="480" y="630" class="cell-text">300</text>
+    <text x="800" y="630" class="cell-text">300</text>
+    <text x="1120" y="630" class="cell-text">300</text>
+    <text x="1440" y="630" class="cell-text">300</text>
+    <text x="1760" y="630" class="cell-text">300</text>
+  </g>
+
+  <!-- Row 4 (400 points) -->
+  <g>
+    <rect x="0" y="720" width="320" height="180" class="cell"/>
+    <rect x="320" y="720" width="320" height="180" class="cell"/>
+    <rect x="640" y="720" width="320" height="180" class="cell"/>
+    <rect x="960" y="720" width="320" height="180" class="cell"/>
+    <rect x="1280" y="720" width="320" height="180" class="cell"/>
+    <rect x="1600" y="720" width="320" height="180" class="cell"/>
+    <rect x="0" y="720" width="1920" height="180" fill="url(#grid)" />
+    <text x="160" y="810" class="cell-text">400</text>
+    <text x="480" y="810" class="cell-text">400</text>
+    <text x="800" y="810" class="cell-text">400</text>
+    <text x="1120" y="810" class="cell-text">400</text>
+    <text x="1440" y="810" class="cell-text">400</text>
+    <text x="1760" y="810" class="cell-text">400</text>
+  </g>
+
+  <!-- Row 5 (500 points) -->
+  <g>
+    <rect x="0" y="900" width="320" height="180" class="cell"/>
+    <rect x="320" y="900" width="320" height="180" class="cell"/>
+    <rect x="640" y="900" width="320" height="180" class="cell"/>
+    <rect x="960" y="900" width="320" height="180" class="cell"/>
+    <rect x="1280" y="900" width="320" height="180" class="cell"/>
+    <rect x="1600" y="900" width="320" height="180" class="cell"/>
+    <rect x="0" y="900" width="1920" height="180" fill="url(#grid)" />
+    <text x="160" y="990" class="cell-text">500</text>
+    <text x="480" y="990" class="cell-text">500</text>
+    <text x="800" y="990" class="cell-text">500</text>
+    <text x="1120" y="990" class="cell-text">500</text>
+    <text x="1440" y="990" class="cell-text">500</text>
+    <text x="1760" y="990" class="cell-text">500</text>
+  </g>
+</svg>
