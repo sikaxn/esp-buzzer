@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}ESP32 Buzzer{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+  <script src="{{ url_for('static', filename='socket.io.min.js') }}"></script>
+</head>
+<body>
+  <div class="container py-4">
+    {% block content %}{% endblock %}
+  </div>
+
+  <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='base.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

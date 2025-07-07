@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Control Panel{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">ESP32 Buzzer Control Panel</h1>
+
+<div class="mb-3">
+  <button id="toggleButton" class="btn btn-success me-2" onclick="toggleRound()">Start Round</button>
+  <button class="btn btn-secondary me-2" onclick="openProjector()">Open Projector Page</button>
+  <button class="btn btn-warning" onclick="clearScreen()">Clear Screen</button>
+</div>
+
+<div id="winnerStatus" class="mb-3 fw-bold text-success">Winner: -</div>
+
+<h4>Connected Devices</h4>
+<table class="table table-bordered" id="deviceTable">
+  <thead class="table-dark">
+    <tr><th>IP</th><th>MAC</th><th>Last Seen</th><th>Last Button</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+let roundActive = false;
+
+function toggleRound() {
+  if (roundActive) {
+    stopRound();
+  } else {
+    startRound();
+  }
+}
+
+function startRound() {
+  fetch('/api/start', { method: 'POST' })
+    .then(res => res.json())
+    .then(() => {
+      roundActive = true;
+      document.getElementById('toggleButton').textContent = "Stop Round";
+      document.getElementById('toggleButton').classList.remove("btn-success");
+      document.getElementById('toggleButton').classList.add("btn-danger");
+      socket.emit("projector_state", { state: "awaiting" });
+    });
+}
+
+function stopRound() {
+  fetch('/api/stop', { method: 'POST' })
+    .then(res => res.json())
+    .then(() => {
+      roundActive = false;
+      document.getElementById('toggleButton').textContent = "Start Round";
+      document.getElementById('toggleButton').classList.remove("btn-danger");
+      document.getElementById('toggleButton').classList.add("btn-success");
+    });
+}
+
+function clearScreen() {
+  socket.emit("projector_state", { state: "clear" });
+  roundActive = false;
+  document.getElementById('toggleButton').textContent = "Start Round";
+  document.getElementById('toggleButton').classList.remove("btn-danger");
+  document.getElementById('toggleButton').classList.add("btn-success");
+}
+
+function openProjector() {
+  window.open('/projector', '_blank');
+}
+
+socket.on('winner', data => {
+  document.getElementById('winnerStatus').textContent = `Winner: ${data.mac}`;
+  socket.emit("projector_state", { state: "winner", mac: data.mac });
+
+  // Automatically stop round UI
+  roundActive = false;
+  document.getElementById('toggleButton').textContent = "Start Round";
+  document.getElementById('toggleButton').classList.remove("btn-danger");
+  document.getElementById('toggleButton').classList.add("btn-success");
+});
+
+
+socket.on('devices', deviceList => {
+  const table = document.querySelector("#deviceTable tbody");
+  table.innerHTML = "";
+  deviceList.forEach(d => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${d.ip}</td>
+      <td>${d.mac}</td>
+      <td>${d.last_seen}s ago</td>
+      <td>${d.last_button}</td>
+    `;
+    table.appendChild(row);
+  });
+});
+</script>
+
+{% endblock %}
