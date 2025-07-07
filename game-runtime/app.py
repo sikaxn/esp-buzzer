@@ -43,6 +43,10 @@ def api_stop():
     esp32_handler.stop_buzz_round()
     return jsonify({"status": "stopped"})
 
+@app.route("/broadcast")
+def broadcast():
+    return render_template("broadcast.html")
+
 # New event push API
 def send_winner(data):
     print("[SEND_WINNER] Send winner called")

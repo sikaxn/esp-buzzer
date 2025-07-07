@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}Broadcast Overlay{% endblock %}
+
+{% block content %}
+<div id="broadcast-container" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 220px;
+  z-index: 9999;
+  pointer-events: none;
+">
+<svg id="broadcastBar" width="1920" height="220" viewBox="0 0 1920 220"
+     xmlns="http://www.w3.org/2000/svg" style="opacity: 0; transition: opacity 0.8s ease;">
+  <defs>
+    <!-- Grid pattern -->
+    <pattern id="grid" width="120" height="120" patternUnits="userSpaceOnUse">
+      <path d="M 120 0 H 0 V 120" fill="none" stroke="#2e90c9" stroke-width="2"/>
+    </pattern>
+
+    <!-- Reveal animation clip -->
+    <clipPath id="revealClip">
+      <rect id="revealRect" x="960" y="0" width="0" height="220" />
+    </clipPath>
+
+    <style>
+      .status-text {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 36px;
+        fill: white;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+
+      .status-text.visible {
+        opacity: 1;
+      }
+
+      .symbol-box {
+        fill: #f1f3f5;
+        stroke: #ced4da;
+        stroke-width: 2;
+        rx: 10;
+        ry: 10;
+      }
+
+      .symbol-selected {
+        fill: #69db7c;
+        stroke: #38b24d;
+        stroke-width: 4;
+        rx: 10;
+        ry: 10;
+      }
+
+      .symbol-text {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+
+      .symbol-default {
+        fill: #212529;
+      }
+
+      .symbol-selected-text {
+        fill: white;
+      }
+    </style>
+  </defs>
+
+  <!-- Everything clipped to animated wipe -->
+  <g clip-path="url(#revealClip)">
+    <!-- Layer 1: Solid blue -->
+    <rect x="40" y="10" width="1840" height="200" rx="20" ry="20" fill="#12527a" />
+    <!-- Layer 2: Black translucent overlay -->
+    <rect x="40" y="10" width="1840" height="200" rx="20" ry="20" fill="rgba(0, 0, 0, 0.5)" />
+    <!-- Layer 3: Grid -->
+    <rect x="40" y="10" width="1840" height="200" rx="20" ry="20" fill="url(#grid)" />
+
+    <!-- Status Text -->
+    <text id="statusText" x="80" y="120" class="status-text">Awaiting Answer…</text>
+
+    <!-- Button Grid -->
+    <g id="buttonA">
+      <rect x="1620" y="50" width="70" height="60" class="symbol-box"/>
+      <text x="1655" y="85" class="symbol-text symbol-default">A</text>
+    </g>
+
+    <g id="buttonB">
+      <rect x="1700" y="50" width="70" height="60" class="symbol-box"/>
+      <text x="1735" y="85" class="symbol-text symbol-default">B</text>
+    </g>
+
+    <g id="buttonCheck">
+      <rect x="1620" y="125" width="70" height="60" class="symbol-box"/>
+      <text x="1655" y="160" class="symbol-text symbol-default">✓</text>
+    </g>
+
+    <g id="buttonX">
+      <rect x="1700" y="125" width="70" height="60" class="symbol-box"/>
+      <text x="1735" y="160" class="symbol-text symbol-default">✗</text>
+    </g>
+  </g>
+</svg>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const bar = document.getElementById("broadcastBar");
+  const textEl = document.getElementById("statusText");
+  const reveal = document.getElementById("revealRect");
+
+  function clearSelection() {
+    ['A', 'B', 'Check', 'X'].forEach(btn => {
+      document.querySelector(`#button${btn} rect`).setAttribute('class', 'symbol-box');
+      document.querySelector(`#button${btn} text`).setAttribute('class', 'symbol-text symbol-default');
+    });
+  }
+
+  function markButton(button) {
+    const map = { 1: 'A', 2: 'B', 3: 'Check', 4: 'X' };
+    const btn = map[button];
+    if (btn) {
+      document.querySelector(`#button${btn} rect`).setAttribute('class', 'symbol-selected');
+      document.querySelector(`#button${btn} text`).setAttribute('class', 'symbol-text symbol-selected-text');
+    }
+  }
+
+  function animateReveal() {
+    if (!reveal) return;
+    reveal.setAttribute("x", "960");
+    reveal.setAttribute("width", "0");
+
+    let start = null;
+    const duration = 500;
+    function step(timestamp) {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const newWidth = 1920 * progress;
+      const newX = 960 - newWidth / 2;
+      reveal.setAttribute("x", newX);
+      reveal.setAttribute("width", newWidth);
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function showBar() {
+    bar.style.opacity = 1;
+    animateReveal();
+  }
+
+  function hideBar() {
+    bar.style.opacity = 0;
+    clearSelection();
+    textEl.textContent = "";
+    textEl.classList.remove("visible");
+  }
+
+  socket.on("projector_state", (data) => {
+    if (data.state === "clear") {
+      hideBar();
+    } else if (data.state === "awaiting") {
+      clearSelection();
+      textEl.textContent = "Awaiting Answer…";
+      textEl.classList.add("visible");
+      showBar();
+    } else if (data.state === "winner") {
+      textEl.textContent = `Winner: ${data.name} (Button ${data.button})`;
+      textEl.classList.add("visible");
+      markButton(data.button);
+      showBar();
+    }
+  });
+});
+</script>
+{% endblock %}
