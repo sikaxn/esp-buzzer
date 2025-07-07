@@ -58,6 +58,20 @@
         #winnerDisplay.visible {
           opacity: 1;
         }
+        #winnerButton {
+        font-family: sans-serif;
+        font-weight: bold;
+        fill: #ffffffcc;
+        text-anchor: middle;
+        dominant-baseline: middle;
+        font-size: 72px;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      #winnerButton.visible {
+        opacity: 1;
+      }
 
         #awaitingText {
           font-family: sans-serif;
@@ -94,6 +108,7 @@
 
     <!-- Winner Display -->
     <text id="winnerDisplay" x="960" y="540"></text>
+    <text id="winnerButton" x="960" y="650"></text>
 
     <!-- Awaiting Answer Text -->
     <text id="awaitingText" x="960" y="1000">Awaiting Answer...</text>
@@ -106,6 +121,7 @@
 const qmarks = Array.from(document.querySelectorAll('.qmark'));
 const winnerText = document.getElementById('winnerDisplay');
 const awaitingText = document.getElementById('awaitingText');
+const winnerButton = document.getElementById('winnerButton');
 
 // Audio setup
 const preludeAudio = new Audio("{{ url_for('static', filename='sounds/prelude.mp3') }}");
@@ -126,6 +142,8 @@ function clearVisuals() {
   winnerText.classList.remove('visible');
   awaitingText.classList.remove('visible');
   winnerText.textContent = '';
+  winnerButton.classList.remove('visible');
+  winnerButton.textContent = '';
 }
 
 function animateQuestionMarks() {
@@ -167,6 +185,8 @@ socket.on('projector_state', data => {
     stopAllAudio();
     winnerText.textContent = `Winner: ${data.name}`;
     winnerText.classList.add('visible');
+    winnerButton.textContent = `Button ${data.button}`;
+    winnerButton.classList.add('visible');
     winnerAudio.play();
   }
 });
