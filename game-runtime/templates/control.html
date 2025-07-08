@@ -8,8 +8,10 @@
 <div class="mb-3">
   <button id="toggleButton" class="btn btn-success me-2" onclick="toggleRound()">Start Round</button>
   <button class="btn btn-secondary me-2" onclick="openProjector()">Open Projector Page</button>
-  <button class="btn btn-warning" onclick="clearScreen()">Clear Screen</button>
+  <button class="btn btn-warning me-2" onclick="clearScreen()">Clear Screen</button>
+  <button class="btn btn-info" onclick="openVirtualBuzzers()">Virtual Buzzers</button>
 </div>
+
 
 <div class="mb-3">
   <div id="winnerStatus" class="fw-bold text-success">Winner: -</div>
@@ -79,6 +81,10 @@ function clearScreen() {
 
 function openProjector() {
   window.open('/projector', '_blank');
+}
+
+function openVirtualBuzzers() {
+  window.open('/buzzer/', '_blank');
 }
 
 socket.on('winner', data => {

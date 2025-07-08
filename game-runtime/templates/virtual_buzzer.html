@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Virtual Buzzer {{ id_number }}</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+    h1 {
+      font-size: 36px;
+    }
+    p {
+      font-size: 20px;
+    }
+    .button-container {
+      margin-top: 30px;
+    }
+    button {
+      font-size: 36px;
+      padding: 20px 40px;
+      margin: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:active {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Virtual Buzzer</h1>
+  <p>MAC: {{ id_number }}</p>
+
+  <div class="button-container">
+    <button onclick="sendBuzz(1)">Button 1</button>
+    <button onclick="sendBuzz(2)">Button 2</button>
+    <button onclick="sendBuzz(3)">Button 3</button>
+    <button onclick="sendBuzz(4)">Button 4</button>
+  </div>
+
+  <script>
+    function sendBuzz(buttonNumber) {
+      fetch("/api/virtual_buzz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mac: "{{ id_number }}",
+          button: buttonNumber
+        })
+      }).then(r => r.json()).then(data => {
+        console.log("Buzz sent:", data);
+      }).catch(console.error);
+    }
+  </script>
+</body>
+</html>

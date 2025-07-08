@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Virtual Buzzer Launcher</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 40px;
+      background-color: #f8f9fa;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    button {
+      padding: 8px 16px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .input-row {
+      margin-top: 40px;
+    }
+    input {
+      padding: 8px;
+      font-size: 16px;
+      width: 300px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Available Virtual Buzzers</h1>
+
+  <table>
+    <tr><th>MAC Address</th><th>Last Button</th><th>Action</th></tr>
+    {% for device in devices %}
+    <tr>
+      <td>{{ device.mac }}</td>
+      <td>{{ device.last_button }}</td>
+      <td><button onclick="window.open('/buzzer/{{ device.mac }}', '_blank')">Launch</button></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3">No virtual buzzers available yet.</td></tr>
+    {% endfor %}
+  </table>
+
+  <div class="input-row">
+    <h2>Launch New Virtual Buzzer</h2>
+    <input type="text" id="macInput" placeholder="Enter MAC address (e.g. 24:DC:C3:98:12:34)">
+    <button onclick="launchBuzzer()">Go</button>
+  </div>
+
+  <script>
+    function launchBuzzer() {
+      const mac = document.getElementById("macInput").value.trim();
+      if (mac) {
+        window.open(`/buzzer/${encodeURIComponent(mac)}`, '_blank');
+      }
+    }
+  </script>
+</body>
+</html>
