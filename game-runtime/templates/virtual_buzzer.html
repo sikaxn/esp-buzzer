@@ -1,47 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Virtual Buzzer {{ id_number }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      margin-top: 100px;
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #f8f9fa;
+      font-family: "Segoe UI", sans-serif;
     }
-    h1 {
-      font-size: 36px;
+
+    svg {
+      width: 100%;
+      height: 100vh;
+      display: block;
     }
-    p {
-      font-size: 20px;
-    }
-    .button-container {
-      margin-top: 30px;
-    }
-    button {
-      font-size: 36px;
-      padding: 20px 40px;
-      margin: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 10px;
+
+    .option-button {
       cursor: pointer;
     }
-    button:active {
-      background-color: #0056b3;
+
+    .outer-box {
+      fill: white;
+      stroke: #74c0fc;
+      stroke-width: 4;
+      rx: 20;
+      ry: 20;
+    }
+
+    .top-bar {
+      fill: #1c7ed6;
+      rx: 20;
+      ry: 20;
+    }
+
+    .question-text {
+      font-size: 24px;
+      fill: #212529;
+      font-weight: bold;
+    }
+
+    .option {
+      fill: #f1f3f5;
+      stroke: #ced4da;
+      stroke-width: 2;
+      rx: 12;
+      ry: 12;
+    }
+
+    .option-selected {
+      fill: #69db7c;
+      stroke: #38b24d;
+      stroke-width: 8;
+      rx: 12;
+      ry: 12;
+    }
+
+    .label {
+      font-size: 20px;
+      font-weight: bold;
+      fill: #343a40;
+    }
+
+    .label-selected {
+      fill: white;
+    }
+
+    .subtext {
+      font-size: 14px;
+      fill: #495057;
+    }
+
+    .top-label {
+      font-size: 22px;
+      fill: white;
+      font-weight: bold;
+      text-anchor: middle;
+      dominant-baseline: middle;
     }
   </style>
 </head>
 <body>
-  <h1>Virtual Buzzer</h1>
-  <p>MAC: {{ id_number }}</p>
+  <svg viewBox="0 0 700 480" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="0" width="700" height="480" class="outer-box"/>
+    <rect x="0" y="0" width="700" height="60" class="top-bar"/>
+    <text x="350" y="32" class="top-label">Virtual Buzzer: {{ id_number }}</text>
+    <text x="50" y="90" class="question-text">Choose your answer:</text>
 
-  <div class="button-container">
-    <button onclick="sendBuzz(1)">Button 1</button>
-    <button onclick="sendBuzz(2)">Button 2</button>
-    <button onclick="sendBuzz(3)">Button 3</button>
-    <button onclick="sendBuzz(4)">Button 4</button>
-  </div>
+    <!-- Button 1 -->
+    <g class="option-button" id="button1" data-button="1">
+      <rect x="50" y="110" width="600" height="70" class="option"/>
+      <text x="70" y="135" class="label">Button 1</text>
+      <text x="70" y="160" class="subtext">Buzz using option 1</text>
+    </g>
+
+    <!-- Button 2 -->
+    <g class="option-button" id="button2" data-button="2">
+      <rect x="50" y="190" width="600" height="70" class="option"/>
+      <text x="70" y="215" class="label">Button 2</text>
+      <text x="70" y="240" class="subtext">Buzz using option 2</text>
+    </g>
+
+    <!-- Button 3 -->
+    <g class="option-button" id="button3" data-button="3">
+      <rect x="50" y="270" width="600" height="70" class="option"/>
+      <text x="70" y="295" class="label">Button 3</text>
+      <text x="70" y="320" class="subtext">Buzz using option 3</text>
+    </g>
+
+    <!-- Button 4 -->
+    <g class="option-button" id="button4" data-button="4">
+      <rect x="50" y="350" width="600" height="70" class="option"/>
+      <text x="70" y="375" class="label">Button 4</text>
+      <text x="70" y="400" class="subtext">Buzz using option 4</text>
+    </g>
+  </svg>
 
   <script>
     function sendBuzz(buttonNumber) {
@@ -56,6 +131,45 @@
         console.log("Buzz sent:", data);
       }).catch(console.error);
     }
+
+    function pressButton(buttonNumber) {
+      const group = document.getElementById(`button${buttonNumber}`);
+      const rect = group.querySelector("rect");
+      const label = group.querySelector(".label");
+      rect.setAttribute("class", "option-selected");
+      label.setAttribute("class", "label label-selected");
+    }
+
+    function releaseButton(buttonNumber) {
+      const group = document.getElementById(`button${buttonNumber}`);
+      const rect = group.querySelector("rect");
+      const label = group.querySelector(".label");
+      rect.setAttribute("class", "option");
+      label.setAttribute("class", "label");
+    }
+
+    // Setup all buttons for both mouse and touch
+document.querySelectorAll(".option-button").forEach(group => {
+  const buttonNumber = parseInt(group.dataset.button);
+
+  group.addEventListener("mousedown", () => pressButton(buttonNumber));
+  group.addEventListener("mouseup", () => {
+    releaseButton(buttonNumber);
+    sendBuzz(buttonNumber); // FIXED: now sends on mouseup
+  });
+  group.addEventListener("mouseleave", () => releaseButton(buttonNumber));
+
+  group.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // Prevent ghost click
+    pressButton(buttonNumber);
+  }, { passive: false });
+
+  group.addEventListener("touchend", () => {
+    releaseButton(buttonNumber);
+    sendBuzz(buttonNumber); // already correct
+  });
+});
+
   </script>
 </body>
 </html>
